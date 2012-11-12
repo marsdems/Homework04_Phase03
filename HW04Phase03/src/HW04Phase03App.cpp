@@ -26,16 +26,18 @@ class HW04Phase03App : public AppBasic {
 	void mouseDown( MouseEvent event );	
 	void keyDown (KeyEvent event);
 	Entry* getData();
+	void getCensusData();
 	void update();
 	void draw();
 	void prepareSettings(Settings* setttings);
-	void drawPoints(double x, double y);
+	ColorA getRandomColor(int iterator);
 
 	Entry* inputFile;
+	Entry* inputCensusData;
 	marsdemsStarbucks* inputData;
 private:
-	static const int kAppWidth=512;
-	static const int kAppHeight=512;
+	static const int kAppWidth=700;
+	static const int kAppHeight=550;
 	static const int kTextureSize=1024;
 
 	int inputDataSize;
@@ -43,8 +45,6 @@ private:
 	float closestX, closestY;
 	Surface* area;
 	gl::Texture bgMap;
-	double curX;
-	double curY;
 };
 
 void HW04Phase03App::prepareSettings(Settings* settings) {
@@ -61,25 +61,13 @@ void HW04Phase03App::setup()
 	closestY = 0;
 	
 	inputFile = getData();	
+	//inputCensusData = getCensusData();
 	int n = sizeCount;
 	inputDataSize = sizeCount;
 	marsdemsStarbucks* inputData = new marsdemsStarbucks();
 
-	//Testing Data for build() and getNearest()
 	inputData->build(inputFile, n);
-	//delete [] inputFile;
 	sizeCount = 0;
-
-	Entry* nearest = inputData -> getNearest(.825088,.6786); //Looking for Yonkers, New York
-	
-	console() << nearest->identifier << "(" << nearest->x << ", " << nearest->y << ")" << endl;
-
-	
-	/*for (int i=0; i < inputDataSize; i++) {
-			curX = inputData->arrayData_[i].x;
-			curY = inputData->arrayData_[i].y;
-			drawPoints(curX, curY);
-	} */
 }
 
 Entry* HW04Phase03App::getData()
@@ -119,8 +107,56 @@ Entry* HW04Phase03App::getData()
 	return locs;
 }
 
+void HW04Phase03App::getCensusData() {
+	int trash;
+	marsdemsStarbucks* closest;
+	int population;
+	double cenX, cenY;
+	ifstream censusOne("../resources/Census_2000.csv");
+	while(censusOne.good()) {
+		censusOne >> trash;
+		censusOne.get();
+		censusOne >> trash;
+		censusOne.get();
+		censusOne >> trash;
+		censusOne.get();
+		censusOne >> trash;
+		censusOne.get();
+		censusOne >> population;
+		censusOne.get();
+		censusOne >> cenX;
+		censusOne.get();
+		censusOne >> cenY;
+		censusOne.get();
+
+		closest = (marsdemsStarbucks*)inputData->getNearest(cenX, cenY);
+		
+	}
+	censusOne.close();
+
+	ifstream censusTwo("../resources/Census_2010.csv");
+	while (censusTwo.good()) {
+		censusTwo >> trash;
+		censusTwo.get();
+		censusTwo >> trash;
+		censusTwo.get();
+		censusTwo >> trash;
+		censusTwo.get();
+		censusTwo >> trash;
+		censusTwo.get();
+		censusTwo >> population;
+		censusTwo.get();
+		censusTwo >> cenX;
+		censusTwo.get();
+		censusTwo >> cenY;
+		censusTwo.get();
+
+		closest = (marsdemsStarbucks*)inputData->getNearest(cenX, cenY);
+		}
+		censusTwo.close();
+}
 void HW04Phase03App::mouseDown( MouseEvent event )
-{ /*
+{ 
 	double xLoc;
 	double yLoc;
 	
@@ -128,15 +164,22 @@ void HW04Phase03App::mouseDown( MouseEvent event )
 	yLoc = 1-1.0*event.getY()/kAppHeight;
 	console() << xLoc << endl;
 	console() << yLoc << endl;
-	//Entry* closest = inputData->getNearest(xLoc, yLoc);
+	Entry* closest = inputData->getNearest(xLoc, yLoc);
 	//closestX = (kAppWidth*(closest->x));
-	//closestY = kAppHeight - (kAppHeight*(closest->y)); */
+	//closestY = kAppHeight - (kAppHeight*(closest->y)); 
 
 }
 
 void HW04Phase03App::keyDown(KeyEvent event)
 {
 	bgCounter++;
+}
+
+ColorA HW04Phase03App::getRandomColor(int iterator) 
+{
+	
+	ColorA RND = ColorA((iterator%10) * 20, 255, 255-((iterator%10) * 20), .5f);
+	return RND;
 }
 
 void HW04Phase03App::update()
@@ -146,7 +189,7 @@ void HW04Phase03App::update()
 
 void HW04Phase03App::draw()
 {
-	gl::color(ColorA(1.0,1.0,1.0,1.0f));
+	gl::color(ColorA(1.0,1.0,1.0,.5f));
 	if (bgCounter % 2 == 0) {
 		gl::draw(bgMap, getWindowBounds());
 	}
@@ -157,9 +200,11 @@ void HW04Phase03App::draw()
 	}
 
 	for (int i=0; i < inputDataSize; i++) {
+		//gl::color(getRandomColor(i));
 		gl::color(ColorA(0.0,0.5,0.0,0.5f));
 		gl::drawSolidCircle(Vec2f(inputFile[i].x*getWindowSize().x,(1-inputFile[i].y)*getWindowSize().y),1);
 	}
+	gl::color(ColorA(1.0,1.0,1.0,.5f));
 }
 
 CINDER_APP_BASIC( HW04Phase03App, RendererGl )
