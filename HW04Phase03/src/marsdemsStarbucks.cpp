@@ -26,3 +26,15 @@ Entry* marsdemsStarbucks::getNearest(double x, double y) {
 	*currentNearest = temp;
 	return currentNearest;
 }
+
+Entry* marsdemsStarbucks::getCurrent(int key) {
+	Entry* current = new Entry();
+	Entry temp;
+	for (int i = 0; i < totalSize; i++) {
+		if (i = key) {
+			temp = arrayData_[i];
+		}
+	}
+	*current = temp;
+	return current;
+}

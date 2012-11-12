@@ -20,6 +20,7 @@ using namespace std;
 class HW04Phase03App : public AppBasic {
    public:
 	int sizeCount;
+	int frameCount;
 
 	void setup();
 	void mouseDown( MouseEvent event );	
@@ -28,17 +29,22 @@ class HW04Phase03App : public AppBasic {
 	void update();
 	void draw();
 	void prepareSettings(Settings* setttings);
+	void drawPoints(double x, double y);
 
+	Entry* inputFile;
 	marsdemsStarbucks* inputData;
 private:
 	static const int kAppWidth=512;
 	static const int kAppHeight=512;
 	static const int kTextureSize=1024;
 
+	int inputDataSize;
 	int bgCounter;
 	float closestX, closestY;
 	Surface* area;
 	gl::Texture bgMap;
+	double curX;
+	double curY;
 };
 
 void HW04Phase03App::prepareSettings(Settings* settings) {
@@ -51,20 +57,29 @@ void HW04Phase03App::setup()
 	bgMap = gl::Texture(loadImage("../resources/Map.jpg"));
 	bgCounter = 0;
 	sizeCount = 0;
-
+	closestX = 0;
+	closestY = 0;
 	
-	Entry* inputFile = getData();	
+	inputFile = getData();	
 	int n = sizeCount;
+	inputDataSize = sizeCount;
 	marsdemsStarbucks* inputData = new marsdemsStarbucks();
 
 	//Testing Data for build() and getNearest()
 	inputData->build(inputFile, n);
-	delete [] inputFile;
+	//delete [] inputFile;
 	sizeCount = 0;
 
 	Entry* nearest = inputData -> getNearest(.825088,.6786); //Looking for Yonkers, New York
 	
 	console() << nearest->identifier << "(" << nearest->x << ", " << nearest->y << ")" << endl;
+
+	
+	/*for (int i=0; i < inputDataSize; i++) {
+			curX = inputData->arrayData_[i].x;
+			curY = inputData->arrayData_[i].y;
+			drawPoints(curX, curY);
+	} */
 }
 
 Entry* HW04Phase03App::getData()
@@ -105,15 +120,18 @@ Entry* HW04Phase03App::getData()
 }
 
 void HW04Phase03App::mouseDown( MouseEvent event )
-{
+{ /*
 	double xLoc;
 	double yLoc;
 	
-	xLoc = event.getX()/kAppWidth;
+	xLoc = 1.0*event.getX()/kAppWidth;
 	yLoc = 1-1.0*event.getY()/kAppHeight;
-	Entry* closest = inputData->getNearest(xLoc, yLoc);
-	closestX = (kAppWidth*(closest->x));
-	closestY = kAppHeight - (kAppHeight*(closest->y));
+	console() << xLoc << endl;
+	console() << yLoc << endl;
+	//Entry* closest = inputData->getNearest(xLoc, yLoc);
+	//closestX = (kAppWidth*(closest->x));
+	//closestY = kAppHeight - (kAppHeight*(closest->y)); */
+
 }
 
 void HW04Phase03App::keyDown(KeyEvent event)
@@ -123,20 +141,25 @@ void HW04Phase03App::keyDown(KeyEvent event)
 
 void HW04Phase03App::update()
 {
+
 }
 
 void HW04Phase03App::draw()
 {
+	
 	if (bgCounter % 2 == 0) {
 		gl::draw(bgMap, getWindowBounds());
 	}
-	else 
+	else {
 		if (bgCounter % 2 == 1) {
 			gl::clear( Color( 0, 0, 0 ) ); 
 		}
+	}
 
-	gl::drawSolidCircle(Vec2f(closestX,closestY), 2, 0);
-
+	for (int i=0; i < inputDataSize; i++) {
+		gl::color(ColorA(0.0,0.5,0.0,0.5f));
+		gl::drawSolidCircle(Vec2f(inputFile[i].x*getWindowSize().x,(1-inputFile[i].y)*getWindowSize().y),1);
+	}
 }
 
 CINDER_APP_BASIC( HW04Phase03App, RendererGl )
