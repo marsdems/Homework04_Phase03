@@ -146,7 +146,7 @@ void HW04Phase03App::update()
 
 void HW04Phase03App::draw()
 {
-	
+	gl::color(ColorA(1.0,1.0,1.0,1.0f));
 	if (bgCounter % 2 == 0) {
 		gl::draw(bgMap, getWindowBounds());
 	}
