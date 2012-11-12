@@ -1,6 +1,11 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C++ Express 2010
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HW04Phase03", "HW04Phase03.vcxproj", "{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9C4CBF88-8F15-4549-9BF8-9746AD1406FC}"
+	ProjectSection(SolutionItems) = preProject
+		..\src\marsdemsStarbucks.cpp = ..\src\marsdemsStarbucks.cpp
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
