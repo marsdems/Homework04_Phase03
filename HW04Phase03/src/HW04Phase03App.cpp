@@ -20,13 +20,16 @@ using namespace std;
 class HW04Phase03App : public AppBasic {
    public:
 	int sizeCount;
+	int census2000Size;
+	int census2010Size;
 	int frameCount;
 
 	void setup();
 	void mouseDown( MouseEvent event );	
 	void keyDown (KeyEvent event);
 	Entry* getData();
-	void getCensusData();
+	Entry* getCensus2000Data();
+	Entry* getCensus2010Data();
 	void update();
 	void draw();
 	void prepareSettings(Settings* setttings);
@@ -34,7 +37,13 @@ class HW04Phase03App : public AppBasic {
 
 	Entry* inputFile;
 	Entry* inputCensusData;
+	Entry* inputCensus2000;
+	Entry* inputCensus2010;
+
 	marsdemsStarbucks* inputData;
+	marsdemsStarbucks* census2000Data;
+	marsdemsStarbucks* census2010Data;	
+
 private:
 	static const int kAppWidth=512;
 	static const int kAppHeight=512;
@@ -61,13 +70,17 @@ void HW04Phase03App::setup()
 	closestY = 0;
 	
 	inputFile = getData();	
-	//inputCensusData = getCensusData();
+	inputCensus2000 = getCensus2000Data();
+	inputCensus2010 = getCensus2010Data();
 	int n = sizeCount;
 	inputDataSize = sizeCount;
-	marsdemsStarbucks* inputData = new marsdemsStarbucks();
+	inputData = new marsdemsStarbucks();
 
 	inputData->build(inputFile, n);
 	sizeCount = 0;
+
+	census2000Data->build(inputCensus2000,census2000Size);
+	census2010Data->build(inputCensus2010,census2010Size);
 }
 
 Entry* HW04Phase03App::getData()
@@ -107,12 +120,28 @@ Entry* HW04Phase03App::getData()
 	return locs;
 }
 
-void HW04Phase03App::getCensusData() {
+Entry* HW04Phase03App::getCensus2000Data() {
+	ifstream censusOne("../resources/Census_2000.csv");
+	Entry entry;
 	int trash;
-	marsdemsStarbucks* closest;
 	int population;
 	double cenX, cenY;
-	ifstream censusOne("../resources/Census_2000.csv");
+
+	string text = "";
+	while (censusOne.good()) {
+		getline(censusOne, text, ',');
+		censusOne >> cenX;
+		censusOne.get();
+		censusOne >> cenY;
+		censusOne.get();
+		census2000Size++;
+	}
+	censusOne.clear();
+	censusOne.seekg(0);
+
+	Entry* locs = new Entry [census2000Size];
+	census2000Size = 0;
+	
 	while(censusOne.good()) {
 		censusOne >> trash;
 		censusOne.get();
@@ -128,13 +157,38 @@ void HW04Phase03App::getCensusData() {
 		censusOne.get();
 		censusOne >> cenY;
 		censusOne.get();
+		(locs+census2000Size)->identifier = population;
+		(locs+census2000Size)->x = cenX;
+		(locs+census2000Size)->y = cenY;
 
-		closest = (marsdemsStarbucks*)inputData->getNearest(cenX, cenY);
-		
+		census2000Size++;		
 	}
 	censusOne.close();
+	return locs;
+}
+	
 
+Entry* HW04Phase03App::getCensus2010Data() {
 	ifstream censusTwo("../resources/Census_2010.csv");
+	Entry entry;
+	int trash;
+	int population;
+	double cenX, cenY;
+
+	string text = "";
+	while (censusTwo.good()) {
+		getline(censusTwo, text, ',');
+		censusTwo >> cenX;
+		censusTwo.get();
+		censusTwo >> cenY;
+		censusTwo.get();
+		census2010Size++;
+	}
+	censusTwo.clear();
+	censusTwo.seekg(0);
+
+	Entry* locs = new Entry [census2010Size];
+	census2010Size = 0;
 	while (censusTwo.good()) {
 		censusTwo >> trash;
 		censusTwo.get();
@@ -151,10 +205,16 @@ void HW04Phase03App::getCensusData() {
 		censusTwo >> cenY;
 		censusTwo.get();
 
-		closest = (marsdemsStarbucks*)inputData->getNearest(cenX, cenY);
+		(locs+census2010Size)->identifier = population;
+		(locs+census2010Size)->x = cenX;
+		(locs+census2010Size)->y = cenY;
+
+		census2010Size++;	
 		}
 		censusTwo.close();
+		return locs;
 }
+
 void HW04Phase03App::mouseDown( MouseEvent event )
 { 
 	double xLoc;

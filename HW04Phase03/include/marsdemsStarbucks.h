@@ -12,6 +12,7 @@ public:
 		Entry* getNearest(double x, double y);
 		Entry* arrayData_;
 		Entry* getCurrent(int key);
+		
 private:
 		int totalSize;
 };

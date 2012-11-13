@@ -14,6 +14,17 @@ void marsdemsStarbucks::build(Entry* c, int n) {
 	totalSize = n;
 }
 
+/*void marsdemsStarbucks::buildCensus(Entry* ca, int n) {
+	census = new CensusArray[n];
+
+	for (int i = 0; i < n; i++) {
+		census[i] = ca[i];
+		censusVector.push_buck(ca[i]);
+	}
+	censusSize = n;
+	censusVectorSize = censusVector.size();
+} */
+
 Entry* marsdemsStarbucks::getNearest(double x, double y) {
 	Entry* currentNearest = new Entry();
 	Entry temp = arrayData_[0];
