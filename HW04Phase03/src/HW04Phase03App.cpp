@@ -115,7 +115,6 @@ Entry* HW04Phase03App::getData()
 		sizeCount ++;
 	}
 	in.close();
-
 	return locs;
 }
 
@@ -236,17 +235,9 @@ Entry* HW04Phase03App::getCensus2010Data() {
 
 void HW04Phase03App::mouseDown( MouseEvent event )
 { 
-	double xLoc;
-	double yLoc;
-	
-	xLoc = 1.0*event.getX()/kAppWidth;
-	yLoc = 1-1.0*event.getY()/kAppHeight;
-	console() << xLoc << endl;
-	console() << yLoc << endl;
-	Entry* closest = inputData->getNearest(xLoc, yLoc);
-	//closestX = (kAppWidth*(closest->x));
-	//closestY = kAppHeight - (kAppHeight*(closest->y)); 
-
+	Entry* closest = inputData->getNearest(1.0*event.getX()/kAppWidth, 1.0-1.0*event.getY()/kAppHeight);
+	closestX = (kAppWidth*(closest->x));
+	closestY = kAppHeight - (kAppHeight*(closest->y)); 
 }
 
 void HW04Phase03App::keyDown(KeyEvent event)
@@ -256,7 +247,6 @@ void HW04Phase03App::keyDown(KeyEvent event)
 
 void HW04Phase03App::update()
 {
-
 }
 
 void HW04Phase03App::draw()
@@ -275,7 +265,7 @@ void HW04Phase03App::draw()
 		gl::color(ColorA(0.0,0.5,0.0,0.5f));
 		gl::drawSolidCircle(Vec2f(inputFile[i].x*getWindowSize().x,(1-inputFile[i].y)*getWindowSize().y),1);
 	}
-	gl::color(ColorA(1.0,1.0,1.0,.5f));
+	gl::drawSolidCircle(Vec2f(closestX, closestY), 5.0f);
 }
 
 CINDER_APP_BASIC( HW04Phase03App, RendererGl )
