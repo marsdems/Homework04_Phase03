@@ -33,7 +33,6 @@ class HW04Phase03App : public AppBasic {
 	void update();
 	void draw();
 	void prepareSettings(Settings* setttings);
-	ColorA getRandomColor(int iterator);
 
 	Entry* inputFile;
 	Entry* inputCensusData;
@@ -70,8 +69,8 @@ void HW04Phase03App::setup()
 	closestY = 0;
 	
 	inputFile = getData();	
-	inputCensus2000 = getCensus2000Data();
-	inputCensus2010 = getCensus2010Data();
+	//inputCensus2000 = getCensus2000Data();
+	//inputCensus2010 = getCensus2010Data();
 	int n = sizeCount;
 	inputDataSize = sizeCount;
 	inputData = new marsdemsStarbucks();
@@ -79,8 +78,8 @@ void HW04Phase03App::setup()
 	inputData->build(inputFile, n);
 	sizeCount = 0;
 
-	census2000Data->build(inputCensus2000,census2000Size);
-	census2010Data->build(inputCensus2010,census2010Size);
+	//census2000Data->build(inputCensus2000,census2000Size);
+	//census2010Data->build(inputCensus2010,census2010Size);
 }
 
 Entry* HW04Phase03App::getData()
@@ -130,6 +129,16 @@ Entry* HW04Phase03App::getCensus2000Data() {
 	string text = "";
 	while (censusOne.good()) {
 		getline(censusOne, text, ',');
+	censusOne >> trash;
+		censusOne.get();
+		censusOne >> trash;
+		censusOne.get();
+		censusOne >> trash;
+		censusOne.get();
+		censusOne >> trash;
+		censusOne.get();
+		censusOne >> population;
+		censusOne.get();
 		censusOne >> cenX;
 		censusOne.get();
 		censusOne >> cenY;
@@ -178,6 +187,16 @@ Entry* HW04Phase03App::getCensus2010Data() {
 	string text = "";
 	while (censusTwo.good()) {
 		getline(censusTwo, text, ',');
+		censusTwo >> trash;
+		censusTwo.get();
+		censusTwo >> trash;
+		censusTwo.get();
+		censusTwo >> trash;
+		censusTwo.get();
+		censusTwo >> trash;
+		censusTwo.get();
+		censusTwo >> population;
+		censusTwo.get();
 		censusTwo >> cenX;
 		censusTwo.get();
 		censusTwo >> cenY;
@@ -235,13 +254,6 @@ void HW04Phase03App::keyDown(KeyEvent event)
 	bgCounter++;
 }
 
-ColorA HW04Phase03App::getRandomColor(int iterator) 
-{
-	
-	ColorA RND = ColorA((iterator%10) * 20, 255, 255-((iterator%10) * 20), .5f);
-	return RND;
-}
-
 void HW04Phase03App::update()
 {
 
@@ -260,7 +272,6 @@ void HW04Phase03App::draw()
 	}
 
 	for (int i=0; i < inputDataSize; i++) {
-		//gl::color(getRandomColor(i));
 		gl::color(ColorA(0.0,0.5,0.0,0.5f));
 		gl::drawSolidCircle(Vec2f(inputFile[i].x*getWindowSize().x,(1-inputFile[i].y)*getWindowSize().y),1);
 	}
