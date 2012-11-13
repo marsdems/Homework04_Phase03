@@ -36,8 +36,8 @@ class HW04Phase03App : public AppBasic {
 	Entry* inputCensusData;
 	marsdemsStarbucks* inputData;
 private:
-	static const int kAppWidth=700;
-	static const int kAppHeight=550;
+	static const int kAppWidth=512;
+	static const int kAppHeight=512;
 	static const int kTextureSize=1024;
 
 	int inputDataSize;
