@@ -3,6 +3,12 @@
 * Assignment: Homework04 Phase03
 * Date Modified: 11/11/2012
 * File: HW04Phase03App.cpp
+*
+* This program satisfies requirements:
+* a) Draws a map of the continential US with markers to 
+*    all Starbucks locations.
+* b) Let the user click anywhere on the map, and locates
+*    the nearest Starbucks. 
 **********************************************************/
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/Texture.h"
@@ -265,7 +271,8 @@ void HW04Phase03App::draw()
 		gl::color(ColorA(0.0,0.5,0.0,0.5f));
 		gl::drawSolidCircle(Vec2f(inputFile[i].x*getWindowSize().x,(1-inputFile[i].y)*getWindowSize().y),1);
 	}
-	gl::drawSolidCircle(Vec2f(closestX, closestY), 5.0f);
+	gl::color(ColorA(1.0,0.0,0.0,0.5f));
+	gl::drawSolidCircle(Vec2f(closestX, closestY), 3.0f);
 }
 
 CINDER_APP_BASIC( HW04Phase03App, RendererGl )
