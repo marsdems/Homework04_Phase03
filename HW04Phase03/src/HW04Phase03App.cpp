@@ -124,6 +124,9 @@ Entry* HW04Phase03App::getData()
 	return locs;
 }
 
+// The general structure of the two census methods were referenced from 
+// HW04Phase02's code. They are however not fully functioning and therefore 
+// not utlizied in my program. 
 Entry* HW04Phase03App::getCensus2000Data() {
 	ifstream censusOne("../resources/Census_2000.csv");
 	Entry entry;
